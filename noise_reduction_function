@@ -1,0 +1,57 @@
+
+noisereduction<-function(x){
+  
+  ###checking for Infinite values
+  x<-x[!x$normalts1==Inf,]        
+  x<-x[!x$normalts2==Inf,]
+  
+  ##### asymmetry in staring
+  skewness(x$normalts1)
+  skewness(x$normalts2)
+  
+  ####removing outliers
+  x<-x[x$normalts1>=(0.7) & x$normalts1 <=(1.3),]
+  x<-x[x$normalts2>=(0.7) & x$normalts2 <=(1.3),]
+  
+  #####asymmetry after removing noisy data
+  skewness(x$normalts1) 
+  skewness(x$normalts2)  
+  
+ ##   plotting of data shows that result should be around 1 but few results 
+##   are less then 0.7 and 
+##  a little are more then 1.3 
+##  they have no contribution in result other then adding noise 
+##  to remove this noise 
+##  we will make a final column from two columns which are near to one
+  
+  x$finalres<-0          #creating final value column from two values
+  
+  
+  ####calculating distance from 1
+  x$res1<-abs(x$normalts1-1)
+  x$res2<-abs(x$normalts2-1)
+  
+  ######choosinf nearee to from given values
+  for(i in 1:nrow(x)) {
+    
+    if(x[i,]$res1>x[i,]$res2)
+      x[i,]$finalres<-x[i,]$normalts2
+    else
+      x[i,]$finalres<-x[i,]$normalts1
+    
+  }
+  
+  ####removing unused columns
+  seg<-grep("res1",names(x))
+  x<-x[,-seg]
+  
+  seg<-grep("res2",names(x))
+  x<-x[,-seg]
+  
+  #######convering final in given format i.e log
+  x$final<-log(x$finalres)
+  
+  
+  
+  
+}
