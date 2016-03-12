@@ -1,4 +1,32 @@
 
+scon <- fread("D:/New folder (7)/matr/SCONES_test.tsv")
+scon<-data.frame(scon)
+
+#converting log values into numeric data form
+  
+      scon$normalts1<-exp(scon$testSample1)
+      scon$normalts2<-exp(scon$testSample2)
+
+
+
+#separating two samples
+      
+      scon1<-scon1[scon1$chr==1,]
+      scon2<-scon1[scon1$chr!=1,]
+
+
+scon11$id<-1:nrow(scon1)
+scon12$id<-1:nrow(scon2)
+
+######removing indicator
+scon1<-scon1[,-1]
+scon2<-scon2[,-1]
+
+#####rearranging columns
+df1<-scon11[,c(5,1:4)]
+df2<-scon12[,c(5,1:4)]
+
+####function
 noisereduction<-function(x){
   
   ###checking for Infinite values
@@ -55,3 +83,5 @@ noisereduction<-function(x){
   
   
 }
+noisereduction(scon1)
+noisereduction(scon2)
